@@ -16,6 +16,11 @@ app.config(function($routeProvider,$locationProvider){
         controller : "loginController"//,
         //controllerAs : 'login'
     })
+    .when('/viewproduct',
+    {
+        templateUrl : "Views/UserManagement/displayProduct.html",
+        controller : "productController"
+    })
     .otherwise(
     {
         template : "<h1>Page Not Found</h1>"
