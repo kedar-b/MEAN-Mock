@@ -1,0 +1,48 @@
+<html>
+    <head>
+        <!-- FOR ANGULAR ROUTING -->
+        <base href = "/">
+
+        <script src="../Scripts/angular.js"></script>
+        <script src="../Scripts/angular-route.js"></script>
+        <script src="../app.js"></script>
+        <script src="../Controllers/loginController.js"></script>        
+        <script src="../Services/service1.js"></script> 
+
+        <link rel="stylesheet" href="../CSS/bootstrap.min.css"></link>
+
+        <style>
+            .ng-invalid{border:1px solid #f00;}
+            .help-block{color:#f00 !important; padding:0px !important; }
+        </style>
+    </head>
+    <body ng-app="app">
+        <header>
+            <div class = "navbar navbar-inverse">
+                <div class = "container">
+                    <div class = "navbar-header">
+                        <a href= "/" class ="navbar-brand"><span></span>Welcome </a>
+                    </div>
+                    <ul ng-if = "main.loggedIn" class = "nav navbar-nav">
+                        <li><a href = "/users"><span class = "glyphicon glyphicon-user"></span> USERS</a></li>
+                        <li><a href = "/addproduct"><span class = "glyphicon glyphicon-user"></span>Add Product</a></li>
+                        <li><a href = "/viewproduct"><span class = "glyphicon glyphicon-user"></span>View Product</a></li>
+                        <li><a href = "/editproduct"><span class = "glyphicon glyphicon-user"></span>Edit Product</a></li>
+                        <li><a href = "/deleteproduct"><span class = "glyphicon glyphicon-user"></span>Delete Product</a></li>
+                        <li><a href = "/usercart"><span class = "glyphicon glyphicon-user"></span>User Cart</a></li>
+                    </ul>
+                    <ul class ="nav navbar-nav navbar-right">
+                        <li ng-if = "!main.loggedIn"><a href ="/login">Login</a></li>
+                        <li ng-if = "!main.loggedIn"><a href ="/register">User Registration</a></li>
+            <li ng-click = "main.doLogout()" ng-if = "main.loggedIn"><a href = "#">Logout</a></li>
+            </ul>
+            </div>
+            </div>
+		</header>
+
+        <main class = "container">
+			<!-- ANGULAR VIEWS -->
+		    <div ng-view></div>
+	    </main>
+    </body>
+</html>    
