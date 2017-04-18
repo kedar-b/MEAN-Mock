@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 var urlEncodedParser = bodyParser.urlencoded({extended:false});
 var app = express();
 var productModel = require(__dirname + '/Server/Schemas/productSchema.js') ;
+var userModel = require(__dirname + '/Server/Schemas/user.js') ;
 
 app.use(express.static('Client'));
 
@@ -22,6 +23,7 @@ app.get('/',function(req,res){
     res.sendFile(__dirname + '/Client/Views/index.htm');
 })
 
+mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://SMD-0860:27017/kCart');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -31,6 +33,30 @@ db.once('open', function (callback) {
 
 app.post('/post',urlEncodedParser,function(req,res){
 
+});
+
+app.route('/registerUser').post(function(req,res){
+    console.log('SERVER.JS Register User');
+
+    var user = new userModel({
+        name : req.body.name,
+        email : req.body.email,
+        username : req.body.username,
+        password : req.body.password
+    });
+
+    console.log(user);
+
+    user.save(function(err){
+        if(err) return res.json({
+            //success : false,
+            message : 'Could not create the User'
+        });
+        res.json({
+            //success : true,
+            message : 'User Created Successfully'
+        });
+    });
 });
 
 var server = app.listen(9090, function(){
