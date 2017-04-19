@@ -29,6 +29,7 @@ productApp.controller('productController',["$scope","productService","$http","to
     $scope.updateProducts = function(){
         productService.put('http://localhost:9090/',$scope.products.ID).then(function (success){
             $scope.products = success.data;
+            //Comment by KEdar
         });
 
     }
