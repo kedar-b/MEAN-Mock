@@ -19,10 +19,7 @@
   "dependencies": {
     "angular": "^1.6.3",
     "angular-route": "^1.6.4",
-<<<<<<< HEAD
     "angular-toastr": "^2.1.1",
-=======
->>>>>>> 9f0f718efd15f796f494a781839e47d846d2992b
     "body-parser": "^1.17.1",
     "express": "^4.15.2",
     "http": "0.0.0",

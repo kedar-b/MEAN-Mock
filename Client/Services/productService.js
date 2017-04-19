@@ -1,25 +1,29 @@
 productApp.service("productService",["$http",function($http){
 
     this.get = function(url){
-        return $http({
+       var request = $http({
             METHOD : 'GET',
             url : url
         });
+
+        return request;
     }
 
-    this.post = function (apiRoute, Model) {
+    this.post = function (url, data) {
         var request = $http({
             method: "post",
-            url: apiRoute,
-            data: Model
+            url: url,
+            data: data
         });
         return request;
     }
 
     this.put = function(url,ID){
-        return $http({
-            METHOD : 'post',
-            url : url +"/"+ ID
+        var request = $http({
+            method: "post",
+            url : url,
+            data: Model
         });
+        return request;
     }
 }])
