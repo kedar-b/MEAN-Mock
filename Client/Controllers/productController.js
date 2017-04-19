@@ -1,4 +1,4 @@
-app.controller('productController',["$scope","$http",function($scope,$http){
+productApp.controller('productController',["$scope","$http",function($scope,$http){
 
     $scope.products = [{ProductName : 'Nokia',Description : 'Best Phone',Price : 2000},
                         {ProductName : 'Samsung',Description : 'Bad Phone',Price : 1000},
