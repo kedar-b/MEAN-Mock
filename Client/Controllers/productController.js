@@ -1,5 +1,5 @@
 productApp.controller('productController',["$scope","productService","$http","toastr",function($scope,productService,$http,toastr){
-$scope.products;
+$scope.products ={};
     // $scope.products = [{ProductName : 'Nokia',Description : 'Best Phone',Price : 2000},
     //                     {ProductName : 'Samsung',Description : 'Bad Phone',Price : 1000},
     //                     {ProductName : 'IPhone',Description : 'Better Phone',Price : 1500}];
