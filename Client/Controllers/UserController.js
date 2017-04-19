@@ -26,7 +26,7 @@ productApp.controller('registerUserController',function($scope,userService){
             $scope.username = "";
             $scope.password = "";
 
-            $scope.message = data.message;
+            $scope.message = data.data.message;
         });
     }
 });
@@ -35,6 +35,22 @@ productApp.controller('registerUserController',function($scope,userService){
 //*************************************************************************************** */
 // Login 
 //*************************************************************************************** */
-productApp.controller('loginUserController',function($scope,userService){
+productApp.controller('loginUserController',function($scope,authService){
+    $scope.processiong = true;
+    $scope.error = "";
+
+    console.log($scope.username);
+    console.log($scope.password);
+
+    $scope.userLogin = function(){
+        authService.login($scope.username,$scope.password).then(function(data){
+            console.log(data.data.success);
+            console.log(data.data.message);
+            if(data.data.success)
+            {
+                $location.path('/users');
+            }
+        });
+    }
 });
 //*************************************************************************************** */
