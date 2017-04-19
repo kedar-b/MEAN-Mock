@@ -39,9 +39,17 @@ db.once('open', function (callback) {
   console.log('MONGO: successfully connected to db');
 });
 
-app.route('/registerUser').post(function(req,res){
-    console.log('SERVER.JS Register User');
+<<<<<<< HEAD
+app.post('/post',urlEncodedParser,function(req,res){
 
+});
+
+//*************************************************************************************** */
+// Following Code to Register a new User
+//*************************************************************************************** */
+=======
+>>>>>>> origin/master
+app.route('/registerUser').post(function(req,res){
     var user = new userModel({
         name : req.body.name,
         email : req.body.email,
@@ -49,19 +57,18 @@ app.route('/registerUser').post(function(req,res){
         password : req.body.password
     });
 
-    console.log(user);
-
     user.save(function(err){
         if(err) return res.json({
             //success : false,
             message : 'Could not create the User'
         });
-        res.json({
+        return res.json({
             //success : true,
             message : 'User Created Successfully'
         });
     });
 });
+//*************************************************************************************** */
 
 app.post('/addProduct', urlEncodedParser,  function(req,res){
     
