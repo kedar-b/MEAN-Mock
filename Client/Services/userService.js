@@ -1,4 +1,4 @@
-app.service('userService',function($http){
+productApp.service('userService',function($http){
 
     this.registerUser = function(User){
         return $http.post('/registerUser/',User);

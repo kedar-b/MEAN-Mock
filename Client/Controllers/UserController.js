@@ -2,7 +2,7 @@
 //*************************************************************************************** */
 // Rigester a New User
 //*************************************************************************************** */
-app.controller('registerUserController',function($scope,userService){
+productApp.controller('registerUserController',function($scope,userService){
     $scope.type = 'create';
 
     $scope.registerUser = function(){
@@ -35,6 +35,6 @@ app.controller('registerUserController',function($scope,userService){
 //*************************************************************************************** */
 // Login 
 //*************************************************************************************** */
-app.controller('loginUserController',function($scope,userService){
+productApp.controller('loginUserController',function($scope,userService){
 });
 //*************************************************************************************** */
