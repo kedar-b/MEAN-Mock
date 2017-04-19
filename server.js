@@ -39,16 +39,50 @@ db.once('open', function (callback) {
   console.log('MONGO: successfully connected to db');
 });
 
-<<<<<<< HEAD
 app.post('/post',urlEncodedParser,function(req,res){
 
 });
 
 //*************************************************************************************** */
+// Following Code to Authenticate a new User
+//*************************************************************************************** */
+app.route('/authenticate').post(function(req,res){
+    console.log('SERVER.JS authentication');
+    console.log(req.body.username);
+    console.log(req.body.password);
+
+    userModel.findOne({
+        username : req.body.username,
+        password : req.body.password
+    },function(err,user){
+        if(err) return res.json({
+				success : false,
+				message : err
+			});
+
+        if(!user)
+        {
+            console.log('USER NOT FOUND');
+            res.json({
+				success : false,
+				message : 'Authencation failed. User not found.'
+			});
+        }
+        else{
+            console.log('USER FOUND');
+            return res.json({
+				success : true,
+				message : "User Authenticated Successfully",
+                username : user.username
+			});
+        }
+    })
+});
+//*************************************************************************************** */
+
+//*************************************************************************************** */
 // Following Code to Register a new User
 //*************************************************************************************** */
-=======
->>>>>>> origin/master
 app.route('/registerUser').post(function(req,res){
     var user = new userModel({
         name : req.body.name,
