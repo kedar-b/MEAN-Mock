@@ -21,6 +21,11 @@ productApp.config(function($routeProvider,$locationProvider){
         templateUrl : "Views/ProductManagement/displayProduct.html",
         controller : "productController"
     })
+    .when('/addproduct',
+    {
+        templateUrl : "Views/ProductManagement/addProduct.html",
+        controller : "productController"
+    })
     .otherwise(
     {
         template : "<h1>Page Not Found</h1>"
