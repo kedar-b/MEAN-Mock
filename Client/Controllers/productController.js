@@ -1,8 +1,8 @@
 productApp.controller('productController',["$scope","productService","$http","toastr",function($scope,productService,$http,toastr){
-
-    $scope.products = [{ProductName : 'Nokia',Description : 'Best Phone',Price : 2000},
-                        {ProductName : 'Samsung',Description : 'Bad Phone',Price : 1000},
-                        {ProductName : 'IPhone',Description : 'Better Phone',Price : 1500}];
+$scope.products;
+    // $scope.products = [{ProductName : 'Nokia',Description : 'Best Phone',Price : 2000},
+    //                     {ProductName : 'Samsung',Description : 'Bad Phone',Price : 1000},
+    //                     {ProductName : 'IPhone',Description : 'Better Phone',Price : 1500}];
     
 
     $scope.addToCart = function(order){
@@ -16,7 +16,13 @@ productApp.controller('productController',["$scope","productService","$http","to
             toastr.error('Something went Wrong');
         });
     }
+   $scope.addProducts = function(){
+        productService.post('http://localhost:9090/addProduct',$scope.products).then(function (success){
+            $scope.products = success.data;
+        },function (error){
 
+        });
+    }
     $scope.getProducts = function(){
         productService.get('http://localhost:9090/').then(function (success){
             $scope.products = success.data;
