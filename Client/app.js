@@ -18,7 +18,7 @@ app.config(function($routeProvider,$locationProvider){
     })
     .when('/viewproduct',
     {
-        templateUrl : "Views/UserManagement/displayProduct.html",
+        templateUrl : "Views/ProductManagement/displayProduct.html",
         controller : "productController"
     })
     .otherwise(

@@ -24,6 +24,14 @@ app.get('/',function(req,res){
 })
 
 mongoose.Promise = global.Promise;
+app.post('/post',urlEncodedParser,function(req,res){
+
+});
+
+app.get('*', function (req, res) {
+    res.sendFile(__dirname + '/Client/Views/index.htm');
+});
+
 mongoose.connect('mongodb://SMD-0860:27017/kCart');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -31,6 +39,7 @@ db.once('open', function (callback) {
   console.log('MONGO: successfully connected to db');
 });
 
+<<<<<<< HEAD
 app.post('/post',urlEncodedParser,function(req,res){
 
 });
@@ -38,6 +47,8 @@ app.post('/post',urlEncodedParser,function(req,res){
 //*************************************************************************************** */
 // Following Code to Register a new User
 //*************************************************************************************** */
+=======
+>>>>>>> origin/master
 app.route('/registerUser').post(function(req,res){
     var user = new userModel({
         name : req.body.name,
@@ -59,6 +70,25 @@ app.route('/registerUser').post(function(req,res){
 });
 //*************************************************************************************** */
 
+app.post('/addProduct', urlEncodedParser,  function(req,res){
+    
+    //console.log(req.body);
+    productModel.create(req.body);
+    //userModel
+});
+
+app.put('/updateProduct', function(req, res){
+	console.log("Product updated Successfully");
+});
+app.delete('/deleteProduct/:id', function(req, res){
+	console.log("Product Deleted Successfully");
+});
+
+app.get('/getProducts',(req,res)=>{
+productModel.find( function(error,users){
+        return res.send(users);
+    })
+});
 var server = app.listen(9090, function(){
      var host = server.address().address;
     var port= server.address().port;
