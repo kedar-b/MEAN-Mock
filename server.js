@@ -39,7 +39,7 @@ db.once('open', function (callback) {
   console.log('MONGO: successfully connected to db');
 });
 
-<<<<<<< HEAD
+
 app.post('/post',urlEncodedParser,function(req,res){
 
 });
@@ -47,8 +47,7 @@ app.post('/post',urlEncodedParser,function(req,res){
 //*************************************************************************************** */
 // Following Code to Register a new User
 //*************************************************************************************** */
-=======
->>>>>>> origin/master
+
 app.route('/registerUser').post(function(req,res){
     var user = new userModel({
         name : req.body.name,

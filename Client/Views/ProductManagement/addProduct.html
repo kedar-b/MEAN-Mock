@@ -1,0 +1,36 @@
+<div class="row" ng-controller="productController">
+    <div class="col-md-12">
+        <div class="col-md-8 col-md-offset-2">
+        <table>
+            <tr>
+            <td><label>Product Name:</label>
+		    <input type="text" placeholder="Name" class="form-control" ng-model="product.ProductName">
+            </td>  
+            <td><label>Description:</label>
+		    <input type="text" placeholder="Description" class="form-control" ng-model="product.Description">
+            </td> 
+            <td><label>Price:</label>
+		    <input type="text" placeholder="Price" class="form-control" ng-model="product.Price">
+            </td>
+            <td style="width: 20px"></td>
+            <td style="padding-top: 22px"><input type="button" class="btn btn-primary" value="ADD PRODUCT" ng-click="addProducts()"/></td>
+        </tr>
+            
+			
+		    
+        </table>
+            <table class="table">
+            <thead>
+                <th>Product Details</th>
+                <tr><td>Name</td>
+                <td>Description</td>
+                <td>Price</td>
+                <td></td></tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+            </table>
+       </div>
+    </div>
+</div>
