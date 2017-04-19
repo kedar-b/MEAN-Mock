@@ -22,6 +22,14 @@ app.get('/',function(req,res){
     res.sendFile(__dirname + '/Client/Views/index.htm');
 })
 
+app.post('/post',urlEncodedParser,function(req,res){
+
+});
+
+app.get('*', function (req, res) {
+    res.sendFile(__dirname + '/Client/Views/index.htm');
+});
+
 mongoose.connect('mongodb://SMD-0860:27017/kCart');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -29,9 +37,7 @@ db.once('open', function (callback) {
   console.log('MONGO: successfully connected to db');
 });
 
-app.post('/post',urlEncodedParser,function(req,res){
 
-});
 
 var server = app.listen(9090, function(){
      var host = server.address().address;
