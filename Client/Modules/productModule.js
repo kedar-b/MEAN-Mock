@@ -1,4 +1,4 @@
-var productApp = angular.module('productApp',["ngRoute"]);
+var productApp = angular.module('productApp',["ngRoute","toastr"]);
 
 productApp.config(function($routeProvider,$locationProvider){
     // $routeProvider.when('/',
@@ -19,6 +19,11 @@ productApp.config(function($routeProvider,$locationProvider){
     .when('/viewproduct',
     {
         templateUrl : "Views/ProductManagement/displayProduct.html",
+        controller : "productController"
+    })
+    .when('/addproduct',
+    {
+        templateUrl : "Views/ProductManagement/addProduct.html",
         controller : "productController"
     })
     .otherwise(
