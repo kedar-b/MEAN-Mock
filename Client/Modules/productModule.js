@@ -1,4 +1,4 @@
-var productApp = angular.module('productApp',["ngRoute"]);
+var productApp = angular.module('productApp',["ngRoute","toastr"]);
 
 productApp.config(function($routeProvider,$locationProvider){
     // $routeProvider.when('/',

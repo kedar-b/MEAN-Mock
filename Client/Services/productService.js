@@ -7,12 +7,13 @@ productApp.service("productService",["$http",function($http){
         });
     }
 
-    this.post = function(url,data){
-        return $http({
-            METHOD : 'post',
-            url : url,
-            data : data
+    this.post = function (apiRoute, Model) {
+        var request = $http({
+            method: "post",
+            url: apiRoute,
+            data: Model
         });
+        return request;
     }
 
     this.put = function(url,ID){

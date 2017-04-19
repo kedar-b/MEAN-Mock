@@ -6,6 +6,7 @@ var urlEncodedParser = bodyParser.urlencoded({extended:false});
 var app = express();
 var productModel = require(__dirname + '/Server/Schemas/productSchema.js') ;
 var userModel = require(__dirname + '/Server/Schemas/user.js') ;
+var orderModel = require(__dirname + '/Server/Schemas/productSchema.js');
 
 app.use(express.static('Client'));
 
@@ -39,17 +40,25 @@ db.once('open', function (callback) {
   console.log('MONGO: successfully connected to db');
 });
 
-<<<<<<< HEAD
-app.post('/post',urlEncodedParser,function(req,res){
 
+app.post('/post',urlEncodedParser,function(req,res){
+    console.log(req.body);
+    //db.create(req.body);
+});
+
+app.post('/addOrder',urlEncodedParser,function(req,res){
+    console.log(req.body);
+    orderModel.create(req.body);
+    res.send("Successfully");
 });
 
 //*************************************************************************************** */
 // Following Code to Register a new User
 //*************************************************************************************** */
-=======
->>>>>>> origin/master
+
 app.route('/registerUser').post(function(req,res){
+    console.log(req.body);
+    
     var user = new userModel({
         name : req.body.name,
         email : req.body.email,
