@@ -35,9 +35,10 @@ app.post('/post',urlEncodedParser,function(req,res){
 
 });
 
+//*************************************************************************************** */
+// Following Code to Register a new User
+//*************************************************************************************** */
 app.route('/registerUser').post(function(req,res){
-    console.log('SERVER.JS Register User');
-
     var user = new userModel({
         name : req.body.name,
         email : req.body.email,
@@ -45,19 +46,18 @@ app.route('/registerUser').post(function(req,res){
         password : req.body.password
     });
 
-    console.log(user);
-
     user.save(function(err){
         if(err) return res.json({
             //success : false,
             message : 'Could not create the User'
         });
-        res.json({
+        return res.json({
             //success : true,
             message : 'User Created Successfully'
         });
     });
 });
+//*************************************************************************************** */
 
 var server = app.listen(9090, function(){
      var host = server.address().address;

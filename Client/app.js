@@ -8,12 +8,12 @@ app.config(function($routeProvider,$locationProvider){
     $routeProvider.when('/login',
     {
         templateUrl : "Views/UserManagement/login.htm",
-        controller : "loginController"
+        controller : "loginUserController"
     })
     .when('/register',
     {
         templateUrl : "Views/UserManagement/register.htm",
-        controller : "loginController"//,
+        controller : "registerUserController"//,
         //controllerAs : 'login'
     })
     .when('/viewproduct',
