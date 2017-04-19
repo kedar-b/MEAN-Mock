@@ -1,6 +1,6 @@
-var app = angular.module("app",["ngRoute"]);
+var productApp = angular.module('productApp',["ngRoute"]);
 
-app.config(function($routeProvider,$locationProvider){
+productApp.config(function($routeProvider,$locationProvider){
     // $routeProvider.when('/',
     // {
     //     templateUrl : "Views/index.htm"
