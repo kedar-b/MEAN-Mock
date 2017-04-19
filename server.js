@@ -29,9 +29,7 @@ app.post('/post',urlEncodedParser,function(req,res){
 
 });
 
-app.get('*', function (req, res) {
-    res.sendFile(__dirname + '/Client/Views/index.htm');
-});
+
 
 mongoose.connect('mongodb://SMD-0860:27017/kCart');
 var db = mongoose.connection;
@@ -55,10 +53,6 @@ app.post('/addOrder',urlEncodedParser,function(req,res){
 // Following Code to Authenticate a new User
 //*************************************************************************************** */
 app.route('/authenticate').post(function(req,res){
-    console.log('SERVER.JS authentication');
-    console.log(req.body.username);
-    console.log(req.body.password);
-
     userModel.findOne({
         username : req.body.username,
         password : req.body.password
@@ -70,14 +64,12 @@ app.route('/authenticate').post(function(req,res){
 
         if(!user)
         {
-            console.log('USER NOT FOUND');
-            res.json({
+            return res.json({
 				success : false,
 				message : 'Authencation failed. User not found.'
 			});
         }
         else{
-            console.log('USER FOUND');
             return res.json({
 				success : true,
 				message : "User Authenticated Successfully",
@@ -91,9 +83,7 @@ app.route('/authenticate').post(function(req,res){
 //*************************************************************************************** */
 // Following Code to Register a new User
 //*************************************************************************************** */
-app.route('/registerUser').post(function(req,res){
-    console.log(req.body);
-    
+app.route('/registerUser').post(function(req,res){    
     var user = new userModel({
         name : req.body.name,
         email : req.body.email,
@@ -103,12 +93,47 @@ app.route('/registerUser').post(function(req,res){
 
     user.save(function(err){
         if(err) return res.json({
-            //success : false,
+            success : false,
             message : 'Could not create the User'
         });
         return res.json({
-            //success : true,
+            success : true,
             message : 'User Created Successfully'
+        });
+    });
+});
+//*************************************************************************************** */
+
+//*************************************************************************************** */
+// Following Code to get all Available Users
+//*************************************************************************************** */
+app.route('/getAllUsers').get(function(req,res){    
+    userModel.find(function(err,users){
+        if(err) return res.json({
+            success : false,
+            message : err
+        });
+
+        return res.json({
+            success : true,
+            users : users
+        });
+    });
+});
+//*************************************************************************************** */
+
+//*************************************************************************************** */
+// Following Code to Delete a User by ID
+//*************************************************************************************** */
+app.route('/deleteUser/:userID').delete(function(req,res){
+    console.log('INSIDE SERVER delete 2');
+    console.log(req.params.userID);
+    userModel.remove({_id:req.params.userID},
+    function(err,user){
+        if(err) return res.send(err);
+        return json({
+            success : true,
+            message : 'User Deleted Successfully'
         });
     });
 });
@@ -133,6 +158,11 @@ productModel.find( function(error,users){
         return res.send(users);
     })
 });
+
+app.get('*', function (req, res) {
+    res.sendFile(__dirname + '/Client/Views/index.htm');
+});
+
 var server = app.listen(9090, function(){
      var host = server.address().address;
     var port= server.address().port;

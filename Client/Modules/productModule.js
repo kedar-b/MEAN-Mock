@@ -13,8 +13,12 @@ productApp.config(function($routeProvider,$locationProvider){
     .when('/register',
     {
         templateUrl : "Views/UserManagement/register.htm",
-        controller : "registerUserController"//,
-        //controllerAs : 'login'
+        controller : "registerUserController"
+    })
+    .when('/users',
+    {
+        templateUrl : "Views/UserManagement/users.htm",
+        controller : "getUsersController"
     })
     .when('/viewproduct',
     {
