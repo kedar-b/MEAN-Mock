@@ -39,8 +39,6 @@ db.once('open', function (callback) {
   console.log('MONGO: successfully connected to db');
 });
 
-
-
 app.route('/registerUser').post(function(req,res){
     console.log('SERVER.JS Register User');
 
@@ -65,6 +63,25 @@ app.route('/registerUser').post(function(req,res){
     });
 });
 
+app.post('/addProduct', urlEncodedParser,  function(req,res){
+    
+    //console.log(req.body);
+    productModel.create(req.body);
+    //userModel
+});
+
+app.put('/updateProduct', function(req, res){
+	console.log("Product updated Successfully");
+});
+app.delete('/deleteProduct/:id', function(req, res){
+	console.log("Product Deleted Successfully");
+});
+
+app.get('/getProducts',(req,res)=>{
+productModel.find( function(error,users){
+        return res.send(users);
+    })
+});
 var server = app.listen(9090, function(){
      var host = server.address().address;
     var port= server.address().port;
