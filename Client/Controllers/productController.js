@@ -18,3 +18,17 @@ productApp.controller('productController',["$scope","productService","$http","to
     }
 
 }]);
+
+$scope.getProducts = function(){
+        productService.get('http://localhost:9090/').then(function (success){
+            $scope.products = success.data;
+
+        },function (error){
+
+        })}
+$scope.updateProducts = function(){
+    productService.put('http://localhost:9090/',$scope.products.ID).then(function (success){
+            $scope.products = success.data;
+    })
+
+}
