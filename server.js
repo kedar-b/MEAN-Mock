@@ -6,7 +6,7 @@ var urlEncodedParser = bodyParser.urlencoded({extended:false});
 var app = express();
 var productModel = require(__dirname + '/Server/Schemas/productSchema.js') ;
 var userModel = require(__dirname + '/Server/Schemas/user.js') ;
-var orderModel = require(__dirname + '/Server/Schemas/productSchema.js');
+var orderModel = require(__dirname + '/Server/Schemas/userOrderSchema.js');
 
 app.use(express.static('Client'));
 
@@ -29,9 +29,7 @@ app.post('/post',urlEncodedParser,function(req,res){
 
 });
 
-app.get('*', function (req, res) {
-    res.sendFile(__dirname + '/Client/Views/index.htm');
-});
+
 
 mongoose.connect('mongodb://SMD-0860:27017/kCart');
 var db = mongoose.connection;
@@ -40,6 +38,23 @@ db.once('open', function (callback) {
   console.log('MONGO: successfully connected to db');
 });
 
+app.post('/addProduct',urlEncodedParser,function(req,res){
+    console.log('called');
+    console.log(req.body);
+    productModel.create(req.body);
+    res.send("Successfully");
+});
+app.get('/getProduct',function(req,res){   
+ productModel.find(function(resp,product){
+     console.log(product);
+     return res.send(product);
+ })   
+});
+app.post('/updateProduct',urlEncodedParser,function(req,res){
+    console.log(req.body);
+    productModel.create(req.body);
+    res.send("Successfully");
+});
 
 app.post('/post',urlEncodedParser,function(req,res){
     console.log(req.body);
@@ -79,13 +94,6 @@ app.route('/registerUser').post(function(req,res){
 });
 //*************************************************************************************** */
 
-app.post('/addProduct', urlEncodedParser,  function(req,res){
-    
-    //console.log(req.body);
-    productModel.create(req.body);
-    //userModel
-});
-
 app.put('/updateProduct', function(req, res){
 	console.log("Product updated Successfully");
 });
@@ -97,6 +105,10 @@ app.get('/getProducts',(req,res)=>{
 productModel.find( function(error,users){
         return res.send(users);
     })
+});
+
+app.get('*', function (req, res) {
+    res.sendFile(__dirname + '/Client/Views/index.htm');
 });
 var server = app.listen(9090, function(){
      var host = server.address().address;

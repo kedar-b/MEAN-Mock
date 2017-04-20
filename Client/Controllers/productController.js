@@ -1,4 +1,5 @@
 productApp.controller('productController',["$scope","productService","$http","toastr",function($scope,productService,$http,toastr){
+$scope.product ={};
 $scope.products ={};
     // $scope.products = [{ProductName : 'Nokia',Description : 'Best Phone',Price : 2000},
     //                     {ProductName : 'Samsung',Description : 'Bad Phone',Price : 1000},
@@ -17,14 +18,16 @@ $scope.products ={};
         });
     }
    $scope.addProducts = function(){
-        productService.post('http://localhost:9090/addProduct',$scope.products).then(function (success){
-            $scope.products = success.data;
+        productService.post('http://localhost:9090/addProduct',$scope.product)
+        .then(function (success){
+            $scope.getProducts();
+            //getProducts();
         },function (error){
-
+            console.log(error);
         });
     }
     $scope.getProducts = function(){
-        productService.get('http://localhost:9090/').then(function (success){
+        productService.get('http://localhost:9090/getProduct').then(function (success){
             $scope.products = success.data;
 
         },function (error){
@@ -33,7 +36,7 @@ $scope.products ={};
     }
 
     $scope.updateProducts = function(){
-        productService.put('http://localhost:9090/',$scope.products.ID).then(function (success){
+        productService.put('http://localhost:9090/updateProduct',$scope.products.ID).then(function (success){
             $scope.products = success.data;
             //Comment by KEdar
         });
