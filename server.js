@@ -169,6 +169,9 @@ app.route('/deleteUser/:userID').delete(function(req,res){
 });
 //*************************************************************************************** */
 
+//*************************************************************************************** */
+// Following Code to Update a User by ID
+//*************************************************************************************** */
 app.route('/updateUser/:userID').put(function(req,res){
     console.log(req.params.userID);
     userModel.findById(req.params.userID,function(err,user){
@@ -196,7 +199,11 @@ app.route('/updateUser/:userID').put(function(req,res){
         });
     })
 });
+//*************************************************************************************** */
 
+//*************************************************************************************** */
+// Following Code to Get a User by ID
+//*************************************************************************************** */
 app.route('/getUserByID/:userID').get(function(req,res){
     userModel.findOne({
         _id : req.params.userID
@@ -210,8 +217,9 @@ app.route('/getUserByID/:userID').get(function(req,res){
             success : true,
             user : user
         });
-    })
-})
+    });
+});
+//*************************************************************************************** */
 
 app.post('/addProduct', urlEncodedParser,  function(req,res){
     
