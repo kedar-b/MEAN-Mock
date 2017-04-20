@@ -6,7 +6,7 @@ var urlEncodedParser = bodyParser.urlencoded({extended:false});
 var app = express();
 var productModel = require(__dirname + '/Server/Schemas/productSchema.js') ;
 var userModel = require(__dirname + '/Server/Schemas/user.js') ;
-var orderModel = require(__dirname + '/Server/Schemas/productSchema.js');
+var orderModel = require(__dirname + '/Server/Schemas/userOrderSchema.js');
 
 app.use(express.static('Client'));
 
@@ -29,9 +29,7 @@ app.post('/post',urlEncodedParser,function(req,res){
 
 });
 
-app.get('*', function (req, res) {
-    res.sendFile(__dirname + '/Client/Views/index.htm');
-});
+
 
 mongoose.connect('mongodb://SMD-0860:27017/kCart');
 var db = mongoose.connection;
@@ -47,10 +45,20 @@ app.post('/post',urlEncodedParser,function(req,res){
 });
 
 app.post('/addOrder',urlEncodedParser,function(req,res){
+    var order = req.body;
+    order.ProductPrice = order.Price;
+    order.GrandTotal = order.Price * order.Quantity;
     console.log(req.body);
-    orderModel.create(req.body);
+    orderModel.create(order);
     res.send("Successfully");
 });
+
+app.get('/viewOrders',function(req,res){
+
+    orderModel.find(function(err,orders){
+        return orders.json();
+    })
+})
 
 //*************************************************************************************** */
 // Following Code to Register a new User
@@ -82,6 +90,8 @@ app.route('/registerUser').post(function(req,res){
 app.post('/addProduct', urlEncodedParser,  function(req,res){
     
     //console.log(req.body);
+    var order = req.body;
+    console.log(order);
     productModel.create(req.body);
     //userModel
 });
@@ -98,6 +108,11 @@ productModel.find( function(error,users){
         return res.send(users);
     })
 });
+
+app.get('*', function (req, res) {
+    res.sendFile(__dirname + '/Client/Views/index.htm');
+});
+
 var server = app.listen(9090, function(){
      var host = server.address().address;
     var port= server.address().port;

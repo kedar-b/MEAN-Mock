@@ -26,6 +26,10 @@ productApp.config(function($routeProvider,$locationProvider){
         templateUrl : "Views/ProductManagement/addProduct.html",
         controller : "productController"
     })
+    .when('/usercart',{
+        templateUrl : "Views/ProductManagement/viewOrders.html",
+        controller : "productController"
+    })
     .otherwise(
     {
         template : "<h1>Page Not Found</h1>"
