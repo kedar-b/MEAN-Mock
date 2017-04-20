@@ -38,7 +38,6 @@ db.once('open', function (callback) {
   console.log('MONGO: successfully connected to db');
 });
 
-
 app.post('/post',urlEncodedParser,function(req,res){
     console.log(req.body);
     //db.create(req.body);
@@ -61,12 +60,40 @@ app.get('/viewOrders',function(req,res){
 })
 
 //*************************************************************************************** */
-// Following Code to Register a new User
+// Following Code to Authenticate a new User
+//*************************************************************************************** */
+app.route('/authenticate').post(function(req,res){
+    userModel.findOne({
+        username : req.body.username,
+        password : req.body.password
+    },function(err,user){
+        if(err) return res.json({
+				success : false,
+				message : err
+			});
+
+        if(!user)
+        {
+            return res.json({
+				success : false,
+				message : 'Authencation failed. User not found.'
+			});
+        }
+        else{
+            return res.json({
+				success : true,
+				message : "User Authenticated Successfully",
+                username : user.username
+			});
+        }
+    })
+});
 //*************************************************************************************** */
 
-app.route('/registerUser').post(function(req,res){
-    console.log(req.body);
-    
+//*************************************************************************************** */
+// Following Code to Register a new User
+//*************************************************************************************** */
+app.route('/registerUser').post(function(req,res){    
     var user = new userModel({
         name : req.body.name,
         email : req.body.email,
@@ -76,12 +103,47 @@ app.route('/registerUser').post(function(req,res){
 
     user.save(function(err){
         if(err) return res.json({
-            //success : false,
+            success : false,
             message : 'Could not create the User'
         });
         return res.json({
-            //success : true,
+            success : true,
             message : 'User Created Successfully'
+        });
+    });
+});
+//*************************************************************************************** */
+
+//*************************************************************************************** */
+// Following Code to get all Available Users
+//*************************************************************************************** */
+app.route('/getAllUsers').get(function(req,res){    
+    userModel.find(function(err,users){
+        if(err) return res.json({
+            success : false,
+            message : err
+        });
+
+        return res.json({
+            success : true,
+            users : users
+        });
+    });
+});
+//*************************************************************************************** */
+
+//*************************************************************************************** */
+// Following Code to Delete a User by ID
+//*************************************************************************************** */
+app.route('/deleteUser/:userID').delete(function(req,res){
+    console.log('INSIDE SERVER delete 2');
+    console.log(req.params.userID);
+    userModel.remove({_id:req.params.userID},
+    function(err,user){
+        if(err) return res.send(err);
+        return json({
+            success : true,
+            message : 'User Deleted Successfully'
         });
     });
 });

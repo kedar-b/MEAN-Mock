@@ -1,16 +1,13 @@
-productApp.controller('productController',["$scope","productService","toastr",function($scope,productService,toastr){
-
-    $scope.products={};
-    $scope.products = [{ProductName : 'Nokia',Description : 'Best Phone',Price : 2000},
-                        {ProductName : 'Samsung',Description : 'Bad Phone',Price : 1000},
-                        {ProductName : 'IPhone',Description : 'Better Phone',Price : 1500}];
+productApp.controller('productController',["$scope","productService","$http","toastr",function($scope,productService,$http,toastr){
+$scope.products ={};
+    // $scope.products = [{ProductName : 'Nokia',Description : 'Best Phone',Price : 2000},
+    //                     {ProductName : 'Samsung',Description : 'Bad Phone',Price : 1000},
+    //                     {ProductName : 'IPhone',Description : 'Better Phone',Price : 1500}];
     
-
 
     $scope.addToCart = function(order){
         
         order.UserName = "Rohan";
-        order.AddedDate = new Date();
         productService.post("http://localhost:9090/addOrder",order)
         .then(function(response){
             toastr.success(order.ProductName + ' added successfully', 'Order');    
@@ -38,6 +35,7 @@ productApp.controller('productController',["$scope","productService","toastr",fu
     $scope.updateProducts = function(){
         productService.put('http://localhost:9090/',$scope.products.ID).then(function (success){
             $scope.products = success.data;
+            //Comment by KEdar
         });
 
     }
