@@ -28,7 +28,10 @@
                 <td></td></tr>
             </thead>
             <tbody>
-                
+               <tr ng-repeat="product in products">
+                    <td>{{product.ProductName}}</td>
+                    <td>{{product.Description}}</td>
+                    <td>{{product.Price}}</td> </tr>
             </tbody>
             </table>
        </div>

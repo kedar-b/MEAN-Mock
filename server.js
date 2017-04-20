@@ -38,6 +38,24 @@ db.once('open', function (callback) {
   console.log('MONGO: successfully connected to db');
 });
 
+app.post('/addProduct',urlEncodedParser,function(req,res){
+    console.log('called');
+    console.log(req.body);
+    productModel.create(req.body);
+    res.send("Successfully");
+});
+app.get('/getProduct',function(req,res){   
+ productModel.find(function(resp,product){
+     console.log(product);
+     return res.send(product);
+ })   
+});
+app.post('/updateProduct',urlEncodedParser,function(req,res){
+    console.log(req.body);
+    productModel.create(req.body);
+    res.send("Successfully");
+});
+
 app.post('/post',urlEncodedParser,function(req,res){
     console.log(req.body);
     //db.create(req.body);
