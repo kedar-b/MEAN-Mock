@@ -1,6 +1,7 @@
 productApp.controller('productController',["$scope","productService","$http","toastr",function($scope,productService,$http,toastr){
 $scope.product ={};
 $scope.products ={};
+$scope.selected = {};
     // $scope.products = [{ProductName : 'Nokia',Description : 'Best Phone',Price : 2000},
     //                     {ProductName : 'Samsung',Description : 'Bad Phone',Price : 1000},
     //                     {ProductName : 'IPhone',Description : 'Better Phone',Price : 1500}];
@@ -20,7 +21,9 @@ $scope.products ={};
    $scope.addProducts = function(){
         productService.post('http://localhost:9090/addProduct',$scope.product)
         .then(function (success){
+             toastr.success($scope.product.ProductName + ' added successfully', 'product'); 
             $scope.getProducts();
+           $scope.product = {};
             //getProducts();
         },function (error){
             console.log(error);
@@ -35,13 +38,25 @@ $scope.products ={};
         });
     }
 
-    $scope.updateProducts = function(){
-        productService.put('http://localhost:9090/updateProduct',$scope.products.ID).then(function (success){
+    $scope.updateProducts = function(ProductName){
+        productService.put('http://localhost:9090/updateProduct',ProductName).then(function (success){
             $scope.products = success.data;
+            $scope.getProducts();
             //Comment by KEdar
         });
 
     }
+
+    $scope.getTemplate = function (product) {  
+    if (product.ProductName === $scope.selected.ProductName){  
+        return 'edit';  
+    }  
+    else return 'display';  
+};
+
+$scope.editProduct = function (product) {  
+    $scope.selected = angular.copy(product);  
+};
 
 }]);
 

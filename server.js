@@ -50,7 +50,8 @@ app.get('/getProduct',function(req,res){
      return res.send(product);
  })   
 });
-app.post('/updateProduct',urlEncodedParser,function(req,res){
+app.put('/updateProduct',urlEncodedParser,function(req,res){
+    console.log("Received updatePerson request");
     console.log(req.body);
     productModel.create(req.body);
     res.send("Successfully");
