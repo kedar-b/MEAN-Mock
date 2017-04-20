@@ -13,19 +13,21 @@ productApp.service('userService',function($http){
     }
 
     this.deleteUser = function(userID){
-        console.log(userID);
         return $http.delete('/deleteUser/' + userID).then(function(data){
-            console.log(data.data.message);
             return data;
         })
     }
 
-});
+    this.updateUser = function(userID,User){
+        return $http.put('/updateUser/' + userID, User).then(function(data){
+            return data;
+        });
+    }
 
-// app.factory('userService',function($http){
-//     var userFactory = {};
-//     userFactory.registerUser = function(User){
-//         return $http.post('/registerUser/',User);
-//     }
-//     return userFactory;
-// });
+    this.getUserByID = function(userID){
+        return $http.get('/getUserByID/' + userID).then(function(data){
+            return data;
+        });
+    }
+
+});

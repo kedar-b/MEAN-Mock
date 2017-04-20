@@ -123,7 +123,7 @@ app.route('/registerUser').post(function(req,res){
     user.save(function(err){
         if(err) return res.json({
             success : false,
-            message : 'Could not create the User'
+            message : 'Could not Create the User'
         });
         return res.json({
             success : true,
@@ -155,14 +155,68 @@ app.route('/getAllUsers').get(function(req,res){
 // Following Code to Delete a User by ID
 //*************************************************************************************** */
 app.route('/deleteUser/:userID').delete(function(req,res){
-    console.log('INSIDE SERVER delete 2');
-    console.log(req.params.userID);
     userModel.remove({_id:req.params.userID},
     function(err,user){
-        if(err) return res.send(err);
-        return json({
+        if(err) return res.json({
+            success : false,
+            message : err
+        });
+
+        return res.json({
             success : true,
-            message : 'User Deleted Successfully'
+            message : "User Deleted Successfully"
+        });
+    });
+});
+//*************************************************************************************** */
+
+//*************************************************************************************** */
+// Following Code to Update a User by ID
+//*************************************************************************************** */
+app.route('/updateUser/:userID').put(function(req,res){
+    console.log(req.params.userID);
+    userModel.findById(req.params.userID,function(err,user){
+        if(err) return res.json({
+            success : false,
+            message : 'User Not Found, provided User ID could be wrong'
+        });
+
+        console.log(req.body.name);
+        
+        user.name = req.body.name;
+        user.email = req.body.email;
+        user.username = req.body.username;
+        user.password = req.body.password;
+
+        user.save(function(err){
+            if(err) return res.json({
+                success : false,
+                message : 'Could not Update the User'
+            });
+            return res.json({
+                success : true,
+                message : 'User Updated Successfully'
+            });
+        });
+    })
+});
+//*************************************************************************************** */
+
+//*************************************************************************************** */
+// Following Code to Get a User by ID
+//*************************************************************************************** */
+app.route('/getUserByID/:userID').get(function(req,res){
+    userModel.findOne({
+        _id : req.params.userID
+    },function(err,user){
+        if(err) return res.json({
+            success : false,
+            message : err
+        });
+
+        return res.json({
+            success : true,
+            user : user
         });
     });
 });
