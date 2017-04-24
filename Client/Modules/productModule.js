@@ -20,6 +20,11 @@ productApp.config(function($routeProvider,$locationProvider){
         templateUrl : "Views/UserManagement/users.htm",
         controller : "getUsersController"
     })
+    .when('/users/:userID',
+    {
+        templateUrl : "Views/UserManagement/register.htm"//,
+        //controller : "registerUserController"
+    })
     .when('/viewproduct',
     {
         templateUrl : "Views/ProductManagement/displayProduct.html",
@@ -28,6 +33,11 @@ productApp.config(function($routeProvider,$locationProvider){
     .when('/addproduct',
     {
         templateUrl : "Views/ProductManagement/addProduct.html",
+        controller : "productController"
+    })
+    .when('/updateProducts',
+    {
+        templateUrl : "Views/ProductManagement/Products.html",
         controller : "productController"
     })
     .when('/usercart',{

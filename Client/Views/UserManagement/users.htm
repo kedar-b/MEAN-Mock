@@ -28,19 +28,27 @@
 		<td>{{ user.email }}</td>
 		<td>{{ user.username }}</td>
 		<td class = "col-sm-2">
-			<a ng-href = "/users/{{user._id}}" class = "btn btn-danger">Edit</a>
+			<a ng-href = "/users/{{user._id}}" class = "btn btn-primary">Edit</a>
 		</td>
 		<td> <a href = "#"
 			ng-click = "deleteUser(user)"
-			class = "btn btn-primary"> Delete</a></td>
+			class = "btn btn-danger"> Delete</a></td>
 	</tr>
 </tbody>	
 </table>
 
-<div ng-if="success=='false'">
-    <div class = "alert alert-info">
-		{{ message }}
-		</div>
+<div ng-if="message">
+    <div ng-if="success">
+        <div class = "alert alert-info">
+            {{ message }}
+            </div>
+    </div>
+
+    <div ng-if="!success">
+        <div class = "alert alert-danger">
+            {{ message }}
+            </div>
+    </div>
 </div>
 
 </div>
