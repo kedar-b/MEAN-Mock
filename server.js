@@ -63,18 +63,59 @@ app.post('/post',urlEncodedParser,function(req,res){
 
 app.post('/addOrder',urlEncodedParser,function(req,res){
     var order = req.body;
-    order.ProductPrice = order.Price;
-    order.GrandTotal = order.Price * order.Quantity;
     console.log(req.body);
+    order.ProductName = order.ProductName;
+    order.ProductQuantity = order.Quantity;
+    order.ProductPrice = order.Price;
+    order.SubTotal = order.Price * order.Quantity;
+    order.AddedDate = new Date();
+    
     orderModel.create(order);
     res.send("Successfully");
 });
 
-app.get('/viewOrders',function(req,res){
+app.get('/viewOrders/:user',function(req,res){
+    var User =  req.params.user;
+    orderModel.find({UserName : User},function(err,orders){
+        if(err){
+            return res.json({
+                success : false,
+                message : err
+            })
 
-    orderModel.find(function(err,orders){
-        return orders.json();
+        }else {
+
+        return res.send(orders);
+        }
     })
+})
+
+app.delete('/deleteOrder/:id',function(req,res){
+    
+    var OrderId = req.params.id;
+    orderModel.remove({_id : OrderId}, (err)=> {
+        if(!err){
+            orderModel.find({UserName : 'Welcome Rohan'} , function(err,orders){
+                if(!err){
+                    return res.send(orders);   
+                }
+                else{
+                    return res.send();   
+                }
+            })
+             
+        }
+        console.log('Delete Successfull');
+    })
+    
+    // orderModel.findOne({_id : OrderId},function(err,order){
+    //     if(!err){
+    //         order.remove(function(error){
+            
+    //         });  
+    //     }
+    // })
+       //dropCollection({ _id : OrderId},function(error,result){
 })
 
 //*************************************************************************************** */

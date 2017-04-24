@@ -1,27 +1,30 @@
-<div ng-controller="productController" ng-init="viewOrders()">
+<div  ng-init="viewOrders()">
     <div class="col-md-12">
         <label> Your Orders </label>
     </div>
 
     <div class="col-md-12">
         <div class="col-md-10 col-md-offset-1">
-            <table class="table table-bordered table-striped">
+            <table class="table table-bordered table-striped" >
                 <tr>
                     <th>Product Name</th>
                     <th>Product Price</th>
+                    <th>Quantity</th>
                     <th>Product Total</th>
                     <th></th>
                 </tr>
                 <tr ng-repeat="order in orders">
-                    <td>{{product.ProductName}}</td>
-                    <td>{{product.Description}}</td>
-                    <td>{{product.ProductPrice}}</td>
+                    <td>{{order.ProductName}}</td>
+                    <td>{{order.ProductPrice}}</td>
+                    <td>{{order.ProductQuantity}}</td>
+                    <td>{{order.SubTotal}}</td>
                     <td>
                         <div class="">
-                            <input type="button" class="btn btn-primary" value="Remove From Cart" ng-click="delete(product)"/>
+                            <input type="button" class="btn btn-primary" value="Remove From Cart" ng-click="delete(order._id)"/>
                         </div>
                     </td>
                 </tr>
+               
             </table>
         </div>
     </div>

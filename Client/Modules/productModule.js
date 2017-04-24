@@ -32,7 +32,7 @@ productApp.config(function($routeProvider,$locationProvider){
     })
     .when('/usercart',{
         templateUrl : "Views/ProductManagement/viewOrders.html",
-        controller : "productController"
+        controller : "orderController"
     })
     .otherwise(
     {

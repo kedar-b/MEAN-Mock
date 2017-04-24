@@ -1,4 +1,4 @@
-productApp.controller('productController',["$scope","productService","$http","toastr",function($scope,productService,$http,toastr){
+productApp.controller('productController',["$scope","$rootScope", "productService","toastr",function($scope,$rootScope,productService,toastr){
 $scope.product ={};
 $scope.products ={};
     // $scope.products = [{ProductName : 'Nokia',Description : 'Best Phone',Price : 2000},
@@ -8,7 +8,7 @@ $scope.products ={};
 
     $scope.addToCart = function(order){
         
-        order.UserName = "Rohan";
+        order.UserName = $rootScope.loggedUserName;
         productService.post("http://localhost:9090/addOrder",order)
         .then(function(response){
             toastr.success(order.ProductName + ' added successfully', 'Order');    

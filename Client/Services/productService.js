@@ -26,4 +26,13 @@ productApp.service("productService",["$http",function($http){
         });
         return request;
     }
+
+    this.delete = function(url,Id){
+        var request = $http({
+            method : 'Delete',
+            url : url  + Id
+
+        })
+        return request;
+    }
 }])
