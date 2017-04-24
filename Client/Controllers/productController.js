@@ -1,7 +1,8 @@
 productApp.controller('productController',["$scope","productService","$http","toastr",function($scope,productService,$http,toastr){
 $scope.product ={};
 $scope.products ={};
-$scope.selected = {};
+$scope.selected;
+
     // $scope.products = [{ProductName : 'Nokia',Description : 'Best Phone',Price : 2000},
     //                     {ProductName : 'Samsung',Description : 'Bad Phone',Price : 1000},
     //                     {ProductName : 'IPhone',Description : 'Better Phone',Price : 1500}];
@@ -48,10 +49,14 @@ $scope.selected = {};
     }
 
     $scope.getTemplate = function (product) {  
-    if (product.ProductName === $scope.selected.ProductName){  
+    if(!($scope.selected == undefined)){
+    if (product._id === $scope.selected._id){  
         return 'edit';  
     }  
     else return 'display';  
+    }else{
+        return 'display';
+    }
 };
 
 $scope.editProduct = function (product) {  

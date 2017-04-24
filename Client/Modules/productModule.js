@@ -35,6 +35,11 @@ productApp.config(function($routeProvider,$locationProvider){
         templateUrl : "Views/ProductManagement/addProduct.html",
         controller : "productController"
     })
+    .when('/updateProducts',
+    {
+        templateUrl : "Views/ProductManagement/Products.html",
+        controller : "productController"
+    })
     .when('/usercart',{
         templateUrl : "Views/ProductManagement/viewOrders.html",
         controller : "productController"

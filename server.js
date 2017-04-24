@@ -31,7 +31,8 @@ app.post('/post',urlEncodedParser,function(req,res){
 
 
 
-mongoose.connect('mongodb://SMD-0860:27017/kCart');
+// mongoose.connect('mongodb://SMD-0860:27017/kCart');
+mongoose.connect('mongodb://SMD-0718:27017/kCart');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function (callback) {

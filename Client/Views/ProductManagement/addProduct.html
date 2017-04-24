@@ -1,57 +1,25 @@
-<div class="row" ng-controller="productController" ng-init="getProducts()">
-    <div class="col-md-12">
-        <div class="col-md-8 col-md-offset-2">
-        <table>
-            <tr>
-            <td><label>Product Name:</label>
-		    <input type="text" placeholder="Name" class="form-control" ng-model="product.ProductName">
-            </td>  
-            <td><label>Description:</label>
-		    <input type="text" placeholder="Description" class="form-control" ng-model="product.Description">
-            </td> 
-            <td><label>Price:</label>
-		    <input type="number" placeholder="Price" class="form-control" ng-model="product.Price">
-            </td>
-            <td style="width: 20px"></td>
-            <td style="padding-top: 22px"><input type="button" class="btn btn-primary" value="ADD PRODUCT" ng-click="addProducts()"/></td>
-        </tr>
-            
-			
-		    
-        </table>
-            <table class="table">
-            <thead>
-                <th>Product Details</th>
-                <tr><td>Name</td>
-                <td>Description</td>
-                <td>Price</td>
-                <td></td></tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="product in products">
-                        <td>{{product.ProductName}}</td>
-                        <td>{{product.Description}}</td>
-                        <td>{{product.Price}}</td> 
-                        <td><input type="button" class="btn btn-primary" value="Edit" ng-click="editProduct(product)"/></td>
-                </tr>
-               <!--<tr ng-repeat="product in products" ng-include="getTemplate(product)">
-                   <script type="text/ng-template" id="display">
-                        <td>{{product.ProductName}}</td>
-                        <td>{{product.Description}}</td>
-                        <td>{{product.Price}}</td> 
-                        <td><input type="button" class="btn btn-primary" value="Edit" ng-click="editProduct(product)"/></td>
-                    </script>
-                    <script type="text/ng-template" id="edit">
-                    <td><input type="text" ng-model=product.ProductName class="form-control input-sm"/></td>  
-                    <td><input type="text" ng-model=product.Description class="form-control input-sm"/></td>  
-                    <td><input type="number" ng-model=product.Price class="form-control input-sm"/></td>  
-                    <td> <input type="button" class="btn btn-primary" value="Save" ng-click="updateProducts(product)"/>
-                        <input type="button" class="btn btn-danger" value="Cancel" ng-click="reset()"/> 
-                    </td>  
-                    </script>
-                </tr>-->
-            </tbody>
-            </table>
-       </div>
-    </div>
-</div>
+<form class="form-horizontal" role="form" ng-controller="productController">
+      <div class="form-group">
+        <label for="inputproductName" class="col-sm-2 control-label">Product Name:</label>
+        <div class="col-sm-4">
+          <input class="form-control" id="inputproductName" placeholder="Product Name" ng-model="product.ProductName">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputDescription" class="col-sm-2 control-label">Description:</label>
+        <div class="col-sm-4">
+          <input class="form-control" id="inputDescription" placeholder="Enter Description" ng-model="product.Description">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="inputPrice" class="col-sm-2 control-label">Price:</label>
+        <div class="col-sm-4">
+          <input class="form-control" id="inputPrice" placeholder="Price" ng-model="product.Price">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-6">
+          <button type="submit" class="btn btn-success" ng-click="addProducts()">Add Product</button>
+        </div>
+      </div>
+    </form>
