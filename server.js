@@ -6,7 +6,7 @@ var urlEncodedParser = bodyParser.urlencoded({extended:false});
 var app = express();
 var productModel = require(__dirname + '/Server/Schemas/productSchema.js') ;
 var userModel = require(__dirname + '/Server/Schemas/user.js') ;
-var orderModel = require(__dirname + '/Server/Schemas/userOrderSchema.js');
+var cartModel = require(__dirname + '/Server/Schemas/userCartSchema.js');
 
 app.use(express.static('Client'));
 
@@ -63,61 +63,123 @@ app.post('/post',urlEncodedParser,function(req,res){
     //db.create(req.body);
 });
 
-app.post('/addOrder',urlEncodedParser,function(req,res){
+app.post('/addToCart',urlEncodedParser,function(req,res){
     var order = req.body;
-    console.log(req.body);
-    order.ProductName = order.ProductName;
-    order.ProductQuantity = order.Quantity;
-    order.ProductPrice = order.Price;
-    order.SubTotal = order.Price * order.Quantity;
-    order.AddedDate = new Date();
-    
-    orderModel.create(order);
-    res.send("Successfully");
+        cartModel.findOne({UserName : order.UserName},function(error,cart){
+
+        var subTotal = order.Quantity * order.Price;    
+        if(cart.length == 0){
+            var createCart = new cartModel({
+                    UserName : order.UserName,
+                    Products : [{
+                        Name : order.ProductName,
+                        Quantity : order.Quantity,
+                        Price : order.Price,
+                        SubTotal : subTotal
+                    }],
+                    AddedDate : new Date() 
+            });
+            
+            try{         
+                cartModel.create(createCart);
+                res.send('The product ' + order.ProductName + 'is added successfully to your cart');
+            }
+            catch(e){
+                res.status(400);
+            }
+            
+        }
+        else{
+
+            var IsProductPresent = cart.Products.find(function(cartProduct){
+                return cartProduct.Name === order.ProductName;
+            });
+           
+            if(IsProductPresent == undefined){
+
+                var cartOrder = { Name : order.ProductName,Quantity : order.Quantity,Price : order.Price,SubTotal : subTotal };
+                cart.Products.push(cartOrder);
+                    cart.save(function(err){
+                        if(err){
+                            return res.status(400);
+                        }else{
+                            return res.send(order.ProductName +  ' is added successfully');
+                        }
+                    });
+            }
+            else{
+                    IsProductPresent.Price = order.Price;
+                    IsProductPresent.Quantity = order.Quantity;
+                    IsProductPresent.SubTotal = subTotal;
+                    cart.save(function(err){
+                        if(err){
+                            res.status(400).send();
+                        }else{
+                            return res.send(order.ProductName +  ' is updated successfully');
+                        }
+                    });
+            }
+            }
+            
+        });
 });
 
-app.get('/viewOrders/:user',function(req,res){
+app.get('/viewCart/:user',function(req,res){
     var User =  req.params.user;
-    orderModel.find({UserName : User},function(err,orders){
-        if(err){
-            return res.json({
-                success : false,
-                message : err
-            })
-
-        }else {
-
-        return res.send(orders);
-        }
-    })
+    
+         var Grarndtotal =   cartModel.aggregate([
+                { 
+                    "$match" : {'UserName' : User}
+                },
+                {
+                    "$project" : {
+                            "UserName" : "$UserName",
+                            "Products" : "$Products",
+                            "grandTotal" : {"$sum" : "$Products.SubTotal"}  
+                            }
+                }
+            ],function(err,result){
+                return res.send(result[0]);
+            });
+            
+            //console.log(Grarndtotal);
+    
+        
 })
 
-app.delete('/deleteOrder/:id',function(req,res){
+app.delete('/deleteCartItem/:id',function(req,res){
     
     var OrderId = req.params.id;
-    orderModel.remove({_id : OrderId}, (err)=> {
-        if(!err){
-            orderModel.find({UserName : 'Welcome Rohan'} , function(err,orders){
-                if(!err){
-                    return res.send(orders);   
-                }
-                else{
-                    return res.send();   
-                }
-            })
-             
-        }
-        console.log('Delete Successfull');
-    })
-    
-    // orderModel.findOne({_id : OrderId},function(err,order){
+    console.log(OrderId);
+    try{
+        cartModel.update({'UserName' : 'Welcome Rohan'},{
+            $pull : { 'Products' : { _id : OrderId } }
+        });
+    }
+    catch(e){
+        console.log(e);
+    }
+    // cartModel.remove({_id : OrderId}, (err)=> {
     //     if(!err){
-    //         order.remove(function(error){
-            
-    //         });  
+    //         cartModel.find({UserName : 'Welcome Rohan'} , function(err,orders){
+    //             if(!err){
+    //                 return res.send(orders);   
+    //             }
+    //             else{
+    //                 return res.send();   
+    //             }
+    //         })
+             
     //     }
+    //     console.log('Delete Successfull');
     // })
-       //dropCollection({ _id : OrderId},function(error,result){
+    
+  
+})
+
+app.post('/placeOrder',function(req,res){
+
+    
 })
 
 //*************************************************************************************** */

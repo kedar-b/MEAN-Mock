@@ -11,7 +11,7 @@ $scope.selected;
     $scope.addToCart = function(order){
         
         order.UserName = $rootScope.loggedUserName;
-        productService.post("http://localhost:9090/addOrder",order)
+        productService.post("http://localhost:9090/addToCart",order)
         .then(function(response){
             toastr.success(order.ProductName + ' added successfully', 'Order');    
         },
