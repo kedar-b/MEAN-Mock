@@ -1,0 +1,42 @@
+<div  ng-init="viewOrders()">
+    <div class="col-md-12">
+        <label> Following are the  {{orders.Products.length}} items added in the cart</label>
+    </div>
+
+    <div class="col-md-12">
+        <div class="col-md-10 col-md-offset-1">
+            <table class="table table-bordered table-striped" >
+                <tr>
+                    <th>Product Name</th>
+                    <th>Product Price</th>
+                    <th>Quantity</th>
+                    <th>Product Total</th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="order in orders.Products">
+                    <td>{{order.Name}}</td>
+                    <td>{{order.Price}}</td>
+                    <td>{{order.Quantity}}</td>
+                    <td>{{order.SubTotal}}</td>
+                    <td>
+                        <div class="">
+                            <input type="button" class="btn btn-primary" value="Remove From Cart" ng-click="delete(order._id)"/>
+                        </div>
+                    </td>
+                </tr>
+               
+            </table>
+        </div>
+    </div>
+    <div class="col-md-4">
+
+        <div class = "form-group">
+		    <label> Total </label>
+            <b><label for="grandTotal">{{orders.grandTotal}}</label></b>
+	    </div>
+
+        <div>
+            <input type="button" value="Confirm" class="btn btn-primary" ng-click="confirmOrder()">
+        </div>
+    </div>
+</div>

@@ -1,0 +1,32 @@
+<div class="row" ng-controller="productController" ng-init="getProducts()">
+
+    <div class="col-md-12">
+        <label> Our Product's </label>
+    </div>
+
+    <div class="col-md-12">
+        <div class="col-md-10 col-md-offset-1">
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <th>Product Name</th>
+                    <th>Product Description</th>
+                    <th>Product Price</th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="product in products">
+                    <td>{{product.ProductName}}</td>
+                    <td>{{product.Description}}</td>
+                    <td>{{product.Price}}</td>
+                    <td>
+                        <div class="input-group">
+                            <input type="number" placeholder="Quantity" class="form-control" ng-model="product.Quantity">
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="button" ng-click="addToCart(product)">Add To Cart</button>
+                        </span>
+                        </div>                    
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

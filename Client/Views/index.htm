@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <!-- FOR ANGULAR ROUTING -->
+        <base href = "/">
+
+        <script src="../Scripts/angular.js"></script>
+        <script src="../Scripts/angular-route.js"></script>
+        <script src="../Modules/productModule.js"></script>
+        <script src="../Controllers/UserController.js"></script>   
+        <script src="../Services/productService.js"></script>
+        <script src="../Services/userService.js"></script> 
+        <script src="../Services/authService.js"></script> 
+        <script src="../Controllers/productController.js"></script>  
+        <script src="../Controllers/orderController.js"></script>  
+        <link rel="stylesheet" href="../CSS/bootstrap.min.css"></link>
+        <link rel="stylesheet" href="../CSS/style.css"></link>
+        <link rel="stylesheet" href="../CSS/angular-toastr.css">
+        <script src="../Scripts/angular-toastr.tpls.js"></script>
+        <style>
+            .help-block{color:#f00 !important; padding:0px !important; }
+        </style>
+    </head>
+    <body ng-app="productApp">
+        <header>
+            <div class = "navbar navbar-inverse" ng-controller="loginUserController">
+                <div class = "container">
+                    <div class = "navbar-header">
+                        <a href= "/" class ="navbar-brand"><span></span>{{loggedUserName}}</a>
+                    </div>
+                    <!--ng-if = "main.loggedIn"-->
+                    <ul  class = "nav navbar-nav">
+                        <li ng-if = "isLogedIn"><a href = "/users" ><span class = "glyphicon glyphicon-user"></span> Users</a></li>
+                        <li ng-if = "isLogedIn"><a href = "/addproduct"><span class = "glyphicon glyphicon-user"></span>Add Product</a></li>
+                        <li ng-if = "isLogedIn"><a href = "/viewproduct"><span class = "glyphicon glyphicon-user"></span>View Product</a></li>
+                        <li ng-if = "isLogedIn"><a href = "/updateProducts"><span class = "glyphicon glyphicon-user"></span>Products</a></li>
+                        <li ng-if = "isLogedIn"><a href = "/deleteproduct"><span class = "glyphicon glyphicon-user"></span>Delete Product</a></li>
+                        <li ng-if = "isLogedIn"><a href = "/usercart"><span class = "glyphicon glyphicon-user"></span>User Cart</a></li>
+                    </ul>
+                    <ul class ="nav navbar-nav navbar-right">
+                        <li ng-if = "!isLogedIn"><a href ="/login">Login</a></li>
+                        <li ng-if = "!isLogedIn"><a href ="/register">User Registration</a></li>
+                        <li ng-click = "logout()" ng-if="isLogedIn"><a href = "#">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+		</header>
+
+        <main class = "container">
+			<!-- ANGULAR VIEWS -->
+		    <div ng-view></div>
+	    </main>
+    </body>
+</html>    
