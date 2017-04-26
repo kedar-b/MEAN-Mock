@@ -44,11 +44,20 @@ $scope.selected;
         productService.put('http://localhost:9090/updateProduct',product).then(function (success){
             $scope.products = success.data;
             toastr.success($scope.selected.ProductName + ' updated successfully', 'product');
-            $scope.selected._id = {};
+            $scope.reset();
             $scope.getProducts();
             //Comment by KEdar
         });
 
+    }
+    $scope.deleteproduct = function(product){
+     productService.delete('http://localhost:9090/deleteproduct',product).then(function (success){
+            $scope.products = success.data;
+            toastr.success($scope.selected.ProductName + ' deleted successfully', 'product');
+            $scope.reset();
+            $scope.getProducts();
+            //Comment by KEdar
+        });
     }
 
     $scope.getTemplate = function (product) {  

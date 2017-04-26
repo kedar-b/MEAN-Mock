@@ -85,10 +85,10 @@ app.put('/updateProduct',urlEncodedParser,function(req,res){
 });
 
 //*************************************************************************************** */
-// Following Code to Delete a User by ID
+// Following Code to Delete a product by _id
 //*************************************************************************************** */
 app.delete('/deleteproduct',urlEncodedParser,function(req,res){
-    productModel.remove({_id:req.params.userID},
+    productModel.remove({_id:req.body._id},
     function(err,user){
         if(err) return res.json({
             success : false,
@@ -97,7 +97,7 @@ app.delete('/deleteproduct',urlEncodedParser,function(req,res){
 
         return res.json({
             success : true,
-            message : "User Deleted Successfully"
+            message : "Product Deleted Successfully"
         });
     });
 });
