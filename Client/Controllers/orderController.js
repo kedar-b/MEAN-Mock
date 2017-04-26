@@ -5,7 +5,7 @@ productApp.controller("orderController",["$scope","$rootScope","productService",
     $scope.delete=function(orderId){
         var answer = confirm("Do you want to remove this product");
         if(answer==true){
-            productService.delete('http://localhost:9090/deleteCartItem/', orderId)
+            productService.post('http://localhost:9090/deleteCartItem/',{ UserName : $rootScope.loggedUserName , Id : orderId})
             .then(function(success){
                 $scope.orders = success.data;
                 toastr.success('The Product is delete from the Cart Successfully');
@@ -26,11 +26,11 @@ productApp.controller("orderController",["$scope","$rootScope","productService",
     }
 
     $scope.confirmOrder = function(){
-        productService.post('http://localhost:9090/confirmOrder/' + $rootScope.loggedUserName).
-        then(function(response){
-            
-        },function(error){
+        // productService.post('http://localhost:9090/confirmOrder/', {UserName : $rootScope.loggedUserName}).
+        // then(function(response){
 
-        })
+        // },function(error){
+
+        // })
     }
 }])
