@@ -2,12 +2,15 @@ var http = require('http');
 var mongoose = require('mongoose');
 var express = require('express');
 var bodyParser = require('body-parser');
+var JWT = require('jsonwebtoken');
 var urlEncodedParser = bodyParser.urlencoded({extended:false});
 var app = express();
 var productModel = require(__dirname + '/Server/Schemas/productSchema.js') ;
 var userModel = require(__dirname + '/Server/Schemas/user.js') ;
 var cartModel = require(__dirname + '/Server/Schemas/userCartSchema.js');
 var userOrder = require(__dirname + '/Server/Schemas/orderSchema.js');
+
+var SuperSecret = 'superSecretKPIT';
 
 app.use(express.static('Client'));
 
@@ -38,6 +41,37 @@ var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function (callback) {
   console.log('MONGO: successfully connected to db');
+});
+
+app.use('/',function(req,res,next){
+    var _ = require('underscore'), nonSecurePaths = ['/', '/authenticate/', '/registerUser/'];
+    if( _.contains(nonSecurePaths, req.path)){
+        return next();
+    }
+    else{
+        var token = req.body.token || req.param('token') ||req.headers['x-access-token'];
+        if(token){
+            //verifies secret and checks exp
+            JWT.verify(token,SuperSecret,function(err,decoded){
+                if(err){
+                    return res.json({
+                        success: false,
+                        message: 'Failed to authenticate token.'
+                    });
+                }else{
+                    //save to request for use in other routes
+                    req.decoded = decoded;
+                    next();// this make sure we go to the next routes and dont stop here
+                }
+            });
+        }
+        else{
+            return res.json({
+                success: false,
+                message: 'No token provided.'
+            });
+        }
+    }
 });
 
 app.post('/addProduct',urlEncodedParser,function(req,res){
@@ -273,10 +307,20 @@ app.route('/authenticate').post(function(req,res){
 			});
         }
         else{
+            var token = JWT.sign({
+                name : user.username,
+                password : user.password
+            }, SuperSecret ,{
+                expiresIn : 86400
+            });
+
+            console.log(token);
+
             return res.json({
 				success : true,
 				message : "User Authenticated Successfully",
-                username : user.username
+                username : user.username,
+                token : token 
 			});
         }
     })
@@ -295,10 +339,20 @@ app.route('/registerUser').post(function(req,res){
     });
 
     user.save(function(err){
-        if(err) return res.json({
-            success : false,
-            message : 'Could not Create the User'
-        });
+        if(err){
+            if(err.code == 11000){
+                return res.json({
+                    success : false,
+                    message : 'Username is already present, Please provide different Username'
+                });
+            }
+            else{
+                return res.json({
+                    success : false,
+                    message : err
+                });
+            }
+        }
         return res.json({
             success : true,
             message : 'User Created Successfully'
@@ -348,14 +402,11 @@ app.route('/deleteUser/:userID').delete(function(req,res){
 // Following Code to Update a User by ID
 //*************************************************************************************** */
 app.route('/updateUser/:userID').put(function(req,res){
-    console.log(req.params.userID);
     userModel.findById(req.params.userID,function(err,user){
         if(err) return res.json({
             success : false,
             message : 'User Not Found, provided User ID could be wrong'
         });
-
-        console.log(req.body.name);
         
         user.name = req.body.name;
         user.email = req.body.email;

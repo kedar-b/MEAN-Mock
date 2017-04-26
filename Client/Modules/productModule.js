@@ -1,6 +1,6 @@
 var productApp = angular.module('productApp',["ngRoute","toastr"]);
 
-productApp.config(function($routeProvider,$locationProvider){
+productApp.config(function($routeProvider,$locationProvider,$httpProvider){
     // $routeProvider.when('/',
     // {
     //     templateUrl : "Views/index.htm"
@@ -51,4 +51,6 @@ productApp.config(function($routeProvider,$locationProvider){
 
     // get rid of the hash in the URL
     $locationProvider.html5Mode(true);
+
+    $httpProvider.interceptors.push('AuthInterceptor');
 })
