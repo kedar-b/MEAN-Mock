@@ -1,6 +1,6 @@
 
 //*************************************************************************************** */
-// Rigester a New User
+// Rigester a New User and to Edit a Particular User
 //*************************************************************************************** */
 productApp.controller('registerUserController',function($scope,$routeParams,userService){
     if($routeParams.userID == undefined){
@@ -20,11 +20,12 @@ productApp.controller('registerUserController',function($scope,$routeParams,user
 
             userService.registerUser($scope.User).then(function(data){
                 $scope.processing = false;
-
-                $scope.name = "";
-                $scope.email = "";
-                $scope.username = "";
-                $scope.password = "";
+                if(data.data.success){
+                    $scope.name = "";
+                    $scope.email = "";
+                    $scope.username = "";
+                    $scope.password = "";
+                }
 
                 $scope.message = data.data.message;
             });
@@ -71,7 +72,7 @@ productApp.controller('registerUserController',function($scope,$routeParams,user
 //*************************************************************************************** */
 
 //*************************************************************************************** */
-// Login 
+// Login and Logout
 //*************************************************************************************** */
 productApp.controller('loginUserController',function($rootScope,$scope,$location,authService){
     $scope.error = "";
@@ -100,7 +101,7 @@ productApp.controller('loginUserController',function($rootScope,$scope,$location
 //*************************************************************************************** */
 
 //*************************************************************************************** */
-// Login 
+// Get User List and to Delete a particular User 
 //*************************************************************************************** */
 productApp.controller('getUsersController',function($scope,userService){
     $scope.processiong = true;
