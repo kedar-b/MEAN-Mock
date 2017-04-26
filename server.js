@@ -36,7 +36,12 @@ app.post('/post',urlEncodedParser,function(req,res){
 
 
 // mongoose.connect('mongodb://SMD-0860:27017/kCart');
-mongoose.connect('mongodb://SMD-0718:27017/kCart');
+//  mongoose.connect('mongodb://:@ds119081.mlab.com:19081/kcart');
+
+mongoose.connect('mongodb://@ds119081.mlab.com:19081/kcart',
+                 {user: 'kpit', pass: 'Secure@04'});
+
+ 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function (callback) {
@@ -278,7 +283,8 @@ app.post('/confirmOrder',function(req,res){
                 if(err){
                     res.status(400).send();
                 }else{
-                    //res.send('')
+         
+                //res.send('')
                 }
             })
         }
