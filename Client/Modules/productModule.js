@@ -46,7 +46,7 @@ productApp.config(function($routeProvider,$locationProvider,$httpProvider){
     })
     .otherwise(
     {
-        template : "<h1>Page Not Found</h1>"
+        template : "<h1>Welcome to Product Management</h1>"
     })
 
     // get rid of the hash in the URL
