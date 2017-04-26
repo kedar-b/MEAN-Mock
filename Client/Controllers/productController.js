@@ -39,7 +39,7 @@ $scope.selected;
         });
     }
 
-    $scope.updateProducts = function(ProductName){
+    $scope.updateProduct = function(ProductName){
         productService.put('http://localhost:9090/updateProduct',ProductName).then(function (success){
             $scope.products = success.data;
             $scope.getProducts();
