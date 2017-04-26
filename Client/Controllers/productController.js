@@ -33,15 +33,18 @@ $scope.selected;
     $scope.getProducts = function(){
         productService.get('http://localhost:9090/getProduct').then(function (success){
             $scope.products = success.data;
+            console.log("product added");
 
         },function (error){
 
         });
     }
 
-    $scope.updateProduct = function(ProductName){
-        productService.put('http://localhost:9090/updateProduct',ProductName).then(function (success){
+    $scope.updateProduct = function(product){
+        productService.put('http://localhost:9090/updateProduct',product).then(function (success){
             $scope.products = success.data;
+            toastr.success($scope.selected.ProductName + ' updated successfully', 'product');
+            $scope.selected._id = {};
             $scope.getProducts();
             //Comment by KEdar
         });
@@ -61,6 +64,10 @@ $scope.selected;
 
 $scope.editProduct = function (product) {  
     $scope.selected = angular.copy(product);  
+};
+
+$scope.reset = function () {
+$scope.selected = {};
 };
 
 }]);

@@ -18,11 +18,11 @@ productApp.service("productService",["$http",function($http){
         return request;
     }
 
-    this.put = function(url,ID){
+    this.put = function(url, data){
         var request = $http({
-            method: "post",
-            url : url,
-            data: Model
+            method: "put",
+            url: url,
+            data: data
         });
         return request;
     }
