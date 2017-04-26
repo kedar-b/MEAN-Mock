@@ -50,11 +50,57 @@ app.get('/getProduct',function(req,res){
      return res.send(product);
  })   
 });
+
+//*************************************************************************************** */
+// Following Code to Update a Product by ID
+//*************************************************************************************** */
 app.put('/updateProduct',urlEncodedParser,function(req,res){
-    productModel.create(req.body);
-    res.send("Successfully");
+
+    productModel.findById(req.body._id,function(err,Product){
+        if(err) return res.json({
+            success : false,
+            message : 'Product Not Found'
 });
 
+        console.log(req.body.name);
+        
+        Product.ProductName = req.body.ProductName;
+        Product.Description = req.body.Description;
+        Product.Price = req.body.Price;
+       
+       
+
+        Product.save(function(err){
+            if(err) return res.json({
+                success : false,
+                message : 'Could not Update the Product'
+            });
+            return res.json({
+                success : true,
+                message : 'Product Updated Successfully'
+            });
+        });
+    })
+});
+
+//*************************************************************************************** */
+// Following Code to Delete a User by ID
+//*************************************************************************************** */
+app.delete('/deleteproduct',urlEncodedParser,function(req,res){
+    productModel.remove({_id:req.params.userID},
+    function(err,user){
+        if(err) return res.json({
+            success : false,
+            message : err
+        });
+
+        return res.json({
+            success : true,
+            message : "User Deleted Successfully"
+        });
+    });
+});
+//*************************************************************************************** */
 app.post('/post',urlEncodedParser,function(req,res){
     //db.create(req.body);
 });
