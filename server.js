@@ -7,6 +7,7 @@ var app = express();
 var productModel = require(__dirname + '/Server/Schemas/productSchema.js') ;
 var userModel = require(__dirname + '/Server/Schemas/user.js') ;
 var cartModel = require(__dirname + '/Server/Schemas/userCartSchema.js');
+var userOrder = require(__dirname + '/Server/Schemas/orderSchema.js');
 
 app.use(express.static('Client'));
 
@@ -40,8 +41,6 @@ db.once('open', function (callback) {
 });
 
 app.post('/addProduct',urlEncodedParser,function(req,res){
-    console.log('called');
-    console.log(req.body);
     productModel.create(req.body);
     res.send("Successfully");
 });
@@ -52,14 +51,11 @@ app.get('/getProduct',function(req,res){
  })   
 });
 app.put('/updateProduct',urlEncodedParser,function(req,res){
-    console.log("Received updatePerson request");
-    console.log(req.body);
     productModel.create(req.body);
     res.send("Successfully");
 });
 
 app.post('/post',urlEncodedParser,function(req,res){
-    console.log(req.body);
     //db.create(req.body);
 });
 
@@ -68,7 +64,7 @@ app.post('/addToCart',urlEncodedParser,function(req,res){
         cartModel.findOne({UserName : order.UserName},function(error,cart){
 
         var subTotal = order.Quantity * order.Price;    
-        if(cart.length == 0){
+        if( cart == null){
             var createCart = new cartModel({
                     UserName : order.UserName,
                     Products : [{
@@ -124,6 +120,7 @@ app.post('/addToCart',urlEncodedParser,function(req,res){
         });
 });
 
+
 app.get('/viewCart/:user',function(req,res){
     var User =  req.params.user;
     
@@ -147,40 +144,67 @@ app.get('/viewCart/:user',function(req,res){
         
 })
 
-app.delete('/deleteCartItem/:id',function(req,res){
-    
-    var OrderId = req.params.id;
-    console.log(OrderId);
+app.post('/deleteCartItem/',urlEncodedParser, function(req,res){
+    var OrderId = req.body.Id;
+    var userName = req.body.UserName;
     try{
-        cartModel.update({'UserName' : 'Welcome Rohan'},{
-            $pull : { 'Products' : { _id : OrderId } }
+
+        cartModel.update(
+            {'UserName' : userName},
+            { $pull : {Products : { _id : OrderId}}}
+        ,function(e,r){
+            if(e){
+                return res.status(400);
+            }
+            else{
+                    var Grarndtotal =   cartModel.aggregate([
+                    { 
+                        "$match" : {'UserName' : userName}
+                    },
+                    {
+                        "$project" : {
+                                "UserName" : "$UserName",
+                                "Products" : "$Products",
+                                "grandTotal" : {"$sum" : "$Products.SubTotal"}  
+                                }
+                    }
+                ],function(err,result){
+                    return res.send(result[0]);
+                });
+            }
         });
+        
     }
     catch(e){
         console.log(e);
     }
-    // cartModel.remove({_id : OrderId}, (err)=> {
-    //     if(!err){
-    //         cartModel.find({UserName : 'Welcome Rohan'} , function(err,orders){
-    //             if(!err){
-    //                 return res.send(orders);   
-    //             }
-    //             else{
-    //                 return res.send();   
-    //             }
-    //         })
-             
-    //     }
-    //     console.log('Delete Successfull');
-    // })
-    
-  
 })
 
-app.post('/placeOrder',function(req,res){
+app.post('/confirmOrder',function(req,res){
 
+    var user = req.body.UserName;
+    cartModel.findOne({UserName : user},function(error,cart){
+        if(!error){
+
+            var userOrder = new userOrder({
+                    UserName : cart.UserName,
+                    Products : cart.Products,
+                    AddedDate : new Date() 
+            });
+            userOrder.create(userOrder);
+        
+            cartModel.remove({UserName : user},function(err){
+                if(err){
+                    res.status(400).send();
+                }else{
+                    //res.send('')
+                }
+            })
+        }
+    });
     
-})
+
+});
 
 //*************************************************************************************** */
 // Following Code to Authenticate a new User
@@ -328,18 +352,14 @@ app.route('/getUserByID/:userID').get(function(req,res){
 
 app.post('/addProduct', urlEncodedParser,  function(req,res){
     
-    //console.log(req.body);
     var order = req.body;
-    console.log(order);
     productModel.create(req.body);
     //userModel
 });
 
 app.put('/updateProduct', function(req, res){
-	console.log("Product updated Successfully");
 });
 app.delete('/deleteProduct/:id', function(req, res){
-	console.log("Product Deleted Successfully");
 });
 
 app.get('/getProducts',(req,res)=>{
