@@ -6,7 +6,7 @@ var urlEncodedParser = bodyParser.urlencoded({extended:false});
 var app = express();
 var productModel = require(__dirname + '/Server/Schemas/productSchema.js') ;
 var userModel = require(__dirname + '/Server/Schemas/user.js') ;
-var orderModel = require(__dirname + '/Server/Schemas/userOrderSchema.js');
+var cartModel = require(__dirname + '/Server/Schemas/userCartSchema.js');
 
 app.use(express.static('Client'));
 
@@ -63,20 +63,123 @@ app.post('/post',urlEncodedParser,function(req,res){
     //db.create(req.body);
 });
 
-app.post('/addOrder',urlEncodedParser,function(req,res){
+app.post('/addToCart',urlEncodedParser,function(req,res){
     var order = req.body;
-    order.ProductPrice = order.Price;
-    order.GrandTotal = order.Price * order.Quantity;
-    console.log(req.body);
-    orderModel.create(order);
-    res.send("Successfully");
+        cartModel.findOne({UserName : order.UserName},function(error,cart){
+
+        var subTotal = order.Quantity * order.Price;    
+        if(cart.length == 0){
+            var createCart = new cartModel({
+                    UserName : order.UserName,
+                    Products : [{
+                        Name : order.ProductName,
+                        Quantity : order.Quantity,
+                        Price : order.Price,
+                        SubTotal : subTotal
+                    }],
+                    AddedDate : new Date() 
+            });
+            
+            try{         
+                cartModel.create(createCart);
+                res.send('The product ' + order.ProductName + 'is added successfully to your cart');
+            }
+            catch(e){
+                res.status(400);
+            }
+            
+        }
+        else{
+
+            var IsProductPresent = cart.Products.find(function(cartProduct){
+                return cartProduct.Name === order.ProductName;
+            });
+           
+            if(IsProductPresent == undefined){
+
+                var cartOrder = { Name : order.ProductName,Quantity : order.Quantity,Price : order.Price,SubTotal : subTotal };
+                cart.Products.push(cartOrder);
+                    cart.save(function(err){
+                        if(err){
+                            return res.status(400);
+                        }else{
+                            return res.send(order.ProductName +  ' is added successfully');
+                        }
+                    });
+            }
+            else{
+                    IsProductPresent.Price = order.Price;
+                    IsProductPresent.Quantity = order.Quantity;
+                    IsProductPresent.SubTotal = subTotal;
+                    cart.save(function(err){
+                        if(err){
+                            res.status(400).send();
+                        }else{
+                            return res.send(order.ProductName +  ' is updated successfully');
+                        }
+                    });
+            }
+            }
+            
+        });
 });
 
-app.get('/viewOrders',function(req,res){
+app.get('/viewCart/:user',function(req,res){
+    var User =  req.params.user;
+    
+         var Grarndtotal =   cartModel.aggregate([
+                { 
+                    "$match" : {'UserName' : User}
+                },
+                {
+                    "$project" : {
+                            "UserName" : "$UserName",
+                            "Products" : "$Products",
+                            "grandTotal" : {"$sum" : "$Products.SubTotal"}  
+                            }
+                }
+            ],function(err,result){
+                return res.send(result[0]);
+            });
+            
+            //console.log(Grarndtotal);
+    
+        
+})
 
-    orderModel.find(function(err,orders){
-        return orders.json();
-    })
+app.delete('/deleteCartItem/:id',function(req,res){
+    
+    var OrderId = req.params.id;
+    console.log(OrderId);
+    try{
+        cartModel.update({'UserName' : 'Welcome Rohan'},{
+            $pull : { 'Products' : { _id : OrderId } }
+        });
+    }
+    catch(e){
+        console.log(e);
+    }
+    // cartModel.remove({_id : OrderId}, (err)=> {
+    //     if(!err){
+    //         cartModel.find({UserName : 'Welcome Rohan'} , function(err,orders){
+    //             if(!err){
+    //                 return res.send(orders);   
+    //             }
+    //             else{
+    //                 return res.send();   
+    //             }
+    //         })
+             
+    //     }
+    //     console.log('Delete Successfull');
+    // })
+    
+  
+})
+
+app.post('/placeOrder',function(req,res){
+
+    
 })
 
 //*************************************************************************************** */
