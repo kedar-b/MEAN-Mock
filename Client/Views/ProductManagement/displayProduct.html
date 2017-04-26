@@ -21,7 +21,7 @@
                         <div class="input-group">
                             <input type="number" placeholder="Quantity" class="form-control" ng-model="product.Quantity" ng-required>
                             <span class="input-group-btn">
-                                <button class="btn btn-primary" type="button" ng-disabled="(product.Quantity == undefined || product.Quantity == 0)" ng-click="addToCart(product)">Add To Cart</button>
+                                <button class="btn btn-primary" type="button" ng-disabled="(product.Quantity == undefined || product.Quantity <= 0)" ng-click="addToCart(product)">Add To Cart</button>
                         </span>
                         </div>                    
                     </td>
