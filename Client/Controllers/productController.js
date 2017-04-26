@@ -51,9 +51,10 @@ $scope.selected;
 
     }
     $scope.deleteproduct = function(product){
-     productService.delete('http://localhost:9090/deleteproduct',product).then(function (success){
+        console.log(product._id);
+     productService.delete('http://localhost:9090/deleteproduct',product._id).then(function (success){
             $scope.products = success.data;
-            toastr.success($scope.selected.ProductName + ' deleted successfully', 'product');
+            toastr.success(product.ProductName + ' deleted successfully', 'product');
             $scope.reset();
             $scope.getProducts();
             //Comment by KEdar

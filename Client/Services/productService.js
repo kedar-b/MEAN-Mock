@@ -27,10 +27,11 @@ productApp.service("productService",["$http",function($http){
         return request;
     }
 
-    this.delete = function(url,Id){
+    this.delete = function(url,productID){
+        console.log('From Service ' + productID);
         var request = $http({
             method : 'Delete',
-            url : url  + Id
+            url : url + '/' + productID
 
         })
         return request;
